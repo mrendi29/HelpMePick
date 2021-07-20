@@ -1,8 +1,6 @@
 package com.example.helpmepick;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.example.helpmepick.fragments.RecommendFragment;
 import com.example.helpmepick.fragments.TrendingFragment;
@@ -15,50 +13,29 @@ import androidx.fragment.app.FragmentManager;
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
-    private final FragmentManager fragmentManager = getSupportFragmentManager();
-    private final Fragment trendingMovies = new TrendingFragment();
-    private final Fragment recommendedMovies = new RecommendFragment();
-    private  Fragment activeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
 
-
-        fragmentManager.beginTransaction().add(R.id.flContainer, trendingMovies, "1").commit();
-//        fragmentManager.beginTransaction().add(R.id.flContainer,recommendedMovies,"2").hide(recommendedMovies).commit();
-//        activeFragment = trendingMovies;
-
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-//            Fragment fragment;
-//            Fragment activeFragment;
             FragmentManager fragmentManager = getSupportFragmentManager();
+            Fragment activeFragment;
             switch (item.getItemId()) {
                 case R.id.action_home:
-                    Toast.makeText(MainActivity.this,"Home",Toast.LENGTH_LONG).show();
-                    fragmentManager.beginTransaction().hide(activeFragment).show(recommendedMovies).commit();
-                    activeFragment = recommendedMovies;
-//                    fragmentManager.beginTransaction().replace(R.id.flContainer,fragment);
-                    Log.v("MyApp","Recommend");
+                    activeFragment = new RecommendFragment();
                     break;
                 case R.id.action_movies:
-                    Toast.makeText(MainActivity.this,"Movies",Toast.LENGTH_LONG).show();
                     activeFragment = new TrendingFragment();
-                    Log.v("MyApp","Movies");
-//                    fragmentManager.beginTransaction().replace(R.id.flContainer,fragment);
                     break;
                 default:
                     activeFragment = new TrendingFragment();
-                    Log.v("MyApp","Myapp");
-//                    fragmentManager.beginTransaction().replace(R.id.flContainer,fragment);
                     break;
             }
 
-//            fragmentManager.beginTransaction().hide(activeFragment).show(fragment).commit();
-            fragmentManager.beginTransaction().replace(R.id.flContainer,activeFragment);
-            Log.v("MyApp","fmanager");
+            fragmentManager.beginTransaction().replace(R.id.flContainer, activeFragment).commit();
             return true;
         });
 
