@@ -1,30 +1,16 @@
 package com.example.helpmepick;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import cz.msebera.android.httpclient.Header;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.helpmepick.adapter.MoviesAdapter;
 import com.example.helpmepick.fragments.RecommendFragment;
 import com.example.helpmepick.fragments.TrendingFragment;
-import com.example.helpmepick.model.Movie;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie);
 
 
-//        fragmentManager.beginTransaction().add(R.id.flContainer,trendingMovies,"1").commit();
+        fragmentManager.beginTransaction().add(R.id.flContainer, trendingMovies, "1").commit();
 //        fragmentManager.beginTransaction().add(R.id.flContainer,recommendedMovies,"2").hide(recommendedMovies).commit();
 //        activeFragment = trendingMovies;
 
