@@ -23,16 +23,10 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             FragmentManager fragmentManager = getSupportFragmentManager();
             Fragment activeFragment;
-            switch (item.getItemId()) {
-                case R.id.action_home:
-                    activeFragment = new RecommendFragment();
-                    break;
-                case R.id.action_movies:
-                    activeFragment = new TrendingFragment();
-                    break;
-                default:
-                    activeFragment = new TrendingFragment();
-                    break;
+            if (item.getItemId() == R.id.action_home) {
+                activeFragment = new RecommendFragment();
+            } else {
+                activeFragment = new TrendingFragment();
             }
 
             fragmentManager.beginTransaction().replace(R.id.flContainer, activeFragment).commit();

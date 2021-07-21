@@ -1,37 +1,40 @@
 package com.example.helpmepick.fragments;
 
-import android.os.Bundle;
+import com.example.helpmepick.Keys;
+import com.example.helpmepick.model.Movie;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import cz.msebera.android.httpclient.Header;
 
-import com.example.helpmepick.R;
-
-import org.jetbrains.annotations.NotNull;
-
-public class RecommendFragment extends Fragment {
+public class RecommendFragment extends TrendingFragment {
+    private final String RECOMMEND_URL_PREFIX = "https://api.themoviedb.org/3/search/movie?api_key=" + Keys.MOVIEDB_KEY + "&language=en-US";
 
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void loadMovies() {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(RECOMMEND_URL_PREFIX + "&query=natasha&page=1&include_adult=false", new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    JSONArray movieJsonArray = response.getJSONArray("results");
 
-    }
+                    movies.addAll(Movie.fromJsonArray(movieJsonArray));
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_recommend, container, false);
-    }
+                    adapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
-    @Override
-    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+        });
     }
 }

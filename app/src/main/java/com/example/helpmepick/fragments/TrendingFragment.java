@@ -28,10 +28,10 @@ import cz.msebera.android.httpclient.Header;
 
 public class TrendingFragment extends Fragment {
     private static final String MOVIE_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=" + Keys.MOVIEDB_KEY;
-    private List<Movie> movies;
-    private MoviesAdapter adapter;
-    private AsyncHttpClient client;
-    private  RecyclerView rvMovies;
+    protected List<Movie> movies;
+    protected MoviesAdapter adapter;
+
+    private RecyclerView rvMovies;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,7 +44,7 @@ public class TrendingFragment extends Fragment {
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        client = new AsyncHttpClient();
+
     }
 
     @Override
@@ -58,7 +58,13 @@ public class TrendingFragment extends Fragment {
         rvMovies.setAdapter(adapter);
         rvMovies.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
-        client.get(MOVIE_URL, new JsonHttpResponseHandler(){
+        loadMovies();
+
+    }
+
+    protected void loadMovies() {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(MOVIE_URL, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
@@ -77,6 +83,5 @@ public class TrendingFragment extends Fragment {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
             }
         });
-
     }
 }
