@@ -58,13 +58,13 @@ public class TrendingFragment extends Fragment {
         rvMovies.setAdapter(adapter);
         rvMovies.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
-        loadMovies();
+        loadMovies(MOVIE_URL);
 
     }
 
-    protected void loadMovies() {
+    protected void loadMovies(String url) {
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get(MOVIE_URL, new JsonHttpResponseHandler() {
+        client.get(url, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
