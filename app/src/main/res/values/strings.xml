@@ -4,4 +4,7 @@
     <string name="text_trending">Trending</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="txtBtnFloat">Tap To Speak</string>
+    <string name="speech_not_supported">Say Something!</string>
+    <string name="speech_prompt">Say Something</string>
 </resources>
