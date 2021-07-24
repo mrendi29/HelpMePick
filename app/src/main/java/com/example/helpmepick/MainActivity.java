@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.util.Log;
+import androidx.appcompat.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.helpmepick.fragments.RecommendFragment;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private final int REQ_CODE_SPEECH_INPUT = 100;
     private FloatingActionButton fba;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
             FragmentManager fragmentManager = getSupportFragmentManager();
             Fragment activeFragment;
             if (item.getItemId() == R.id.action_home) {
-                activeFragment = new RecommendFragment();
+                activeFragment = new RecommendFragment("");
             } else {
                 activeFragment = new TrendingFragment();
             }
@@ -47,12 +49,27 @@ public class MainActivity extends AppCompatActivity {
             fragmentManager.beginTransaction().replace(R.id.flContainer, activeFragment).commit();
             return true;
         });
-
         bottomNavigationView.setSelectedItemId(R.id.action_movies);
 
         fba = findViewById(R.id.btnTalk);
-
         fba.setOnClickListener(v -> promptSpeechInput());
+
+        searchView = findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (query.length() == 0) {
+                    Toast.makeText(getApplicationContext(), "Please search something more exciting!", Toast.LENGTH_SHORT).show();
+                }
+                getSupportFragmentManager().beginTransaction().replace(R.id.flContainer, new RecommendFragment(query)).commit();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return true;
+            }
+        });
     }
 
     private void promptSpeechInput() {
@@ -83,8 +100,7 @@ public class MainActivity extends AppCompatActivity {
                     .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             Log.v("MyApp", result.get(0));
             Toast.makeText(this, result.get(0), Toast.LENGTH_SHORT).show();
-
-
+            getSupportFragmentManager().beginTransaction().replace(R.id.flContainer, new RecommendFragment(result.get(0))).commit();
         }
     }
 

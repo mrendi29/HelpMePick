@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.helpmepick.Keys;
 import com.example.helpmepick.R;
@@ -80,7 +81,7 @@ public class TrendingFragment extends Fragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Toast.makeText(getContext(), "Try searching something interesting :)", Toast.LENGTH_SHORT).show();
             }
         });
     }
