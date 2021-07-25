@@ -29,11 +29,13 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton fba;
     private SearchView searchView;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
         requestRecordAudioPermission();
+
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {

@@ -44,8 +44,7 @@ public class TrendingFragment extends Fragment {
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
+      
     }
 
     @Override
@@ -80,7 +79,6 @@ public class TrendingFragment extends Fragment {
                             Toast.makeText(getActivity(), "Try searching something interesting :)", Toast.LENGTH_SHORT).show();
                         }
                     }
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
