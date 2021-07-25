@@ -39,7 +39,10 @@ public class Movie {
 
         for (int i = 0; i < movieJsonArray.length(); ++i) {
             // Each time we add a new Movie Json Object the constructor is called and each value is populated
-            movies.add(new Movie(movieJsonArray.getJSONObject(i)));
+            JSONObject movie = movieJsonArray.getJSONObject(i);
+
+            if (!movie.getString("poster_path").equals("null"))
+                movies.add(new Movie(movie));
         }
         // The List is then returned into the other method which it was called.
         return movies;

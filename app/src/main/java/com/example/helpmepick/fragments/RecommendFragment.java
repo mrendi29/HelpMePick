@@ -1,37 +1,26 @@
 package com.example.helpmepick.fragments;
 
-import android.os.Bundle;
+import com.example.helpmepick.Keys;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+public class RecommendFragment extends TrendingFragment {
+    private final String RECOMMEND_URL_PREFIX = "https://api.themoviedb.org/3/search/movie?api_key=" + Keys.MOVIEDB_KEY + "&language=en-US";
 
-import com.example.helpmepick.R;
-
-import org.jetbrains.annotations.NotNull;
-
-public class RecommendFragment extends Fragment {
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    public RecommendFragment(String query){
+        this.loadMovies(query);
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_recommend, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    protected void loadMovies(String url) {
+        //Ugly hack? Might fix later.
+        try {
+            super.loadMovies(RECOMMEND_URL_PREFIX + String.format("&query=%s&page=1&include_adult=false",
+                    URLEncoder.encode(url, StandardCharsets.UTF_8.toString()))
+            );
+        }catch (UnsupportedEncodingException e){
+            e.printStackTrace();
+        }
     }
 }

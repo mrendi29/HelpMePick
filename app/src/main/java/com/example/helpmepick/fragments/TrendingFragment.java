@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.helpmepick.Keys;
 import com.example.helpmepick.R;
@@ -28,10 +29,10 @@ import cz.msebera.android.httpclient.Header;
 
 public class TrendingFragment extends Fragment {
     private static final String MOVIE_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=" + Keys.MOVIEDB_KEY;
-    private List<Movie> movies;
-    private MoviesAdapter adapter;
-    private AsyncHttpClient client;
-    private  RecyclerView rvMovies;
+    protected List<Movie> movies;
+    protected MoviesAdapter adapter;
+
+    private RecyclerView rvMovies;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,8 +44,7 @@ public class TrendingFragment extends Fragment {
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        client = new AsyncHttpClient();
+      
     }
 
     @Override
@@ -58,15 +58,27 @@ public class TrendingFragment extends Fragment {
         rvMovies.setAdapter(adapter);
         rvMovies.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
-        client.get(MOVIE_URL, new JsonHttpResponseHandler(){
+        loadMovies(MOVIE_URL);
+
+    }
+
+    protected void loadMovies(String url) {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(url, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
-                    JSONArray movieJsonArray = response.getJSONArray("results");
+                    if (isAdded()) {
+                        if (statusCode == 200 && response.getJSONArray("results").length() != 0) {
+                            JSONArray movieJsonArray = response.getJSONArray("results");
 
-                    movies.addAll(Movie.fromJsonArray(movieJsonArray));
+                            movies.addAll(Movie.fromJsonArray(movieJsonArray));
 
-                    adapter.notifyDataSetChanged();
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            Toast.makeText(getActivity(), "Try searching something interesting :)", Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -74,9 +86,9 @@ public class TrendingFragment extends Fragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
+                if (isAdded())
+                    Toast.makeText(getActivity(), "Whoops! Something went wrong :( \n Please try again :)", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 }
