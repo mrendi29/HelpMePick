@@ -7,8 +7,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
-import android.util.Log;
-import androidx.appcompat.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.helpmepick.fragments.RecommendFragment;
@@ -20,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -61,6 +60,9 @@ public class MainActivity extends AppCompatActivity {
                 if (query.length() == 0) {
                     Toast.makeText(getApplicationContext(), "Please search something more exciting!", Toast.LENGTH_SHORT).show();
                 }
+                bottomNavigationView.setSelectedItemId(R.id.action_home);
+                searchView.setQuery("", false);
+                searchView.clearFocus();
                 getSupportFragmentManager().beginTransaction().replace(R.id.flContainer, new RecommendFragment(query)).commit();
                 return false;
             }
@@ -98,8 +100,8 @@ public class MainActivity extends AppCompatActivity {
 
             ArrayList<String> result = data
                     .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-            Log.v("MyApp", result.get(0));
-            Toast.makeText(this, result.get(0), Toast.LENGTH_SHORT).show();
+
+            bottomNavigationView.setSelectedItemId(R.id.action_home);
             getSupportFragmentManager().beginTransaction().replace(R.id.flContainer, new RecommendFragment(result.get(0))).commit();
         }
     }

@@ -69,11 +69,18 @@ public class TrendingFragment extends Fragment {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
-                    JSONArray movieJsonArray = response.getJSONArray("results");
+                    if (isAdded()) {
+                        if (statusCode == 200 && response.getJSONArray("results").length() != 0) {
+                            JSONArray movieJsonArray = response.getJSONArray("results");
 
-                    movies.addAll(Movie.fromJsonArray(movieJsonArray));
+                            movies.addAll(Movie.fromJsonArray(movieJsonArray));
 
-                    adapter.notifyDataSetChanged();
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            Toast.makeText(getActivity(), "Try searching something interesting :)", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -81,7 +88,8 @@ public class TrendingFragment extends Fragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Toast.makeText(getContext(), "Try searching something interesting :)", Toast.LENGTH_SHORT).show();
+                if (isAdded())
+                    Toast.makeText(getActivity(), "Whoops! Something went wrong :( \n Please try again :)", Toast.LENGTH_SHORT).show();
             }
         });
     }
