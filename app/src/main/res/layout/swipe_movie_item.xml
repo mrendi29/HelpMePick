@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="140dp"
+    android:layout_height="220dp"
+    android:orientation="vertical"
+    android:paddingRight="10dp"
+    android:paddingLeft="10dp"
+    >
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/rvMovieSwipeContainer">
+
+            <ImageView
+                android:id="@+id/movie_image"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:layout_centerHorizontal="true"
+                />
+
+            <TextView
+                android:id="@+id/movie_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/movie_image"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingBottom="1dp"
+               />
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
