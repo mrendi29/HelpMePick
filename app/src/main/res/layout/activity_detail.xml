@@ -38,20 +38,24 @@
         android:text="Overview" />
 
 
+
+
     <LinearLayout
         android:id="@+id/rlRecommendationHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="10dp"
-        android:layout_marginStart="5dp">
+        android:layout_marginTop="10dp"
+        android:paddingLeft="5dp"
+        android:background="@color/teal_200">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Recommendations"
             android:textStyle="bold"
-            android:paddingRight="20sp"/>
+            android:layout_marginRight="20sp"
+            />
 
         <TextView
             android:id="@+id/showRecommendationsButton"
@@ -62,7 +66,11 @@
             android:textSize="10sp"
             android:textStyle="italic"
             android:textColor="@color/light_blue"/>
+
+
     </LinearLayout>
+
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:paddingTop="5dp"
@@ -70,7 +78,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        />
 
 
 
