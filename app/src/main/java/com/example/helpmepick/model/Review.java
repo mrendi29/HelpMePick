@@ -39,8 +39,8 @@ public class Review {
 
     }
 
-    public int getRating() {
-        return rating;
+    public String getRating() {
+        return String.valueOf(rating);
     }
 
     public String getUsername() {

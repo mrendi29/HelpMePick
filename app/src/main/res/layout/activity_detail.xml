@@ -38,7 +38,13 @@
         android:text="Overview" />
 
 
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:paddingTop="5dp"
+        android:id="@+id/rvReview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        />
 
     <LinearLayout
         android:id="@+id/rlRecommendationHeader"
