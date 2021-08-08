@@ -10,8 +10,10 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.helpmepick.adapter.ReviewAdapter;
 import com.example.helpmepick.adapter.SwipeMovieAdapter;
 import com.example.helpmepick.model.Movie;
+import com.example.helpmepick.model.Review;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -36,6 +38,8 @@ public class DetailActivity extends YouTubeBaseActivity {
 
     private static final String TRAILER_API_KEY = "https://api.themoviedb.org/3/movie/%d/videos?api_key=" + Keys.TRAILER_API_KEY;
     private static final String MOVIE_API_KEY = "https://api.themoviedb.org/3/movie/%d/recommendations?api_key=" + Keys.MOVIEDB_KEY;
+    private static final String REVIEW_API_KEY = "https://api.themoviedb.org/3/movie/%d/reviews?api_key=" + Keys.MOVIEDB_KEY;
+
 
     TextView tvTitle;
     TextView tvOverview;
@@ -45,6 +49,9 @@ public class DetailActivity extends YouTubeBaseActivity {
     YouTubePlayerView youTubePlayerView;
     RecyclerView recommendView;
     SwipeMovieAdapter swipeMovieAdapter;
+    RecyclerView reviewView;
+    ReviewAdapter reviewAdapter;
+    List<Review> reviews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +90,16 @@ public class DetailActivity extends YouTubeBaseActivity {
             }
         });
 
+        //set Review adapter
+        reviewView =  findViewById(R.id.rvReview);
+        reviews = new ArrayList<>();
+        reviewAdapter = new ReviewAdapter(this, reviews);
+
+        reviewView.setAdapter(reviewAdapter);
+        reviewView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+        //load Reviews
+        loadReviews(String.format(REVIEW_API_KEY, movie.getMovieId()));
 
         //set adapter
         recommendView =  findViewById(R.id.rvRecommendSwipe);
@@ -141,6 +158,32 @@ public class DetailActivity extends YouTubeBaseActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 Log.d("Movie Recommendation","You Donked up");
+            }
+        });
+    }
+
+    protected void loadReviews(String url) {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(url, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    JSONArray result = response.getJSONArray("results");
+                    if (statusCode != 200 || result.length() == 0)
+                        return;
+
+                    reviews.addAll(Review.fromJsonArray(result));
+
+                    reviewAdapter.notifyDataSetChanged();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d("Review","Review didn't load");
             }
         });
     }
