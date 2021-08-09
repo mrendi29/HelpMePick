@@ -10,7 +10,7 @@ import java.util.List;
 public class Review {
 
     String username;
-    int rating;
+    String rating;
     String content;
 
     //Empty constructor needed for parcel
@@ -19,7 +19,12 @@ public class Review {
 
     public Review(JSONObject jsonObject) throws JSONException {
        JSONObject author_detail = jsonObject.getJSONObject("author_details");
-       rating = author_detail.getInt("rating");
+       try{
+           rating = String.valueOf(author_detail.getInt("rating")) + "/10";
+       } catch (Exception e){
+           rating = "N/A";
+       }
+
        username = author_detail.getString("username");
        content = jsonObject.getString("content");
 
@@ -40,7 +45,7 @@ public class Review {
     }
 
     public String getRating() {
-        return String.valueOf(rating);
+        return rating;
     }
 
     public String getUsername() {

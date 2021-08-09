@@ -69,12 +69,15 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         TextView username;
         TextView rating;
         TextView content;
+        RelativeLayout reviewContainer;
+        boolean viewFullReview = false;
 
         public ViewHolder(View itemView) {
             super(itemView);
             username = itemView.findViewById(R.id.review_username);
             rating  = itemView.findViewById(R.id.review_rating);
             content = itemView.findViewById(R.id.review_content);
+            reviewContainer = itemView.findViewById(R.id.reviewContainer);
 
         }
 
@@ -83,6 +86,17 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             username.setText(review.getUsername());
             rating.setText(review.getRating());
             content.setText(review.getContent());
+
+            reviewContainer.setOnClickListener(v ->{
+                if (viewFullReview) {
+                    content.setMaxLines(4);
+                    viewFullReview = false;
+                }
+                else {
+                    content.setMaxLines(Integer.MAX_VALUE);
+                    viewFullReview = true;
+                }
+            });
 
         }
 

@@ -3,8 +3,10 @@ package com.example.helpmepick;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -96,7 +98,7 @@ public class DetailActivity extends YouTubeBaseActivity {
         reviewAdapter = new ReviewAdapter(this, reviews);
 
         reviewView.setAdapter(reviewAdapter);
-        reviewView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        reviewView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         //load Reviews
         loadReviews(String.format(REVIEW_API_KEY, movie.getMovieId()));
@@ -169,12 +171,17 @@ public class DetailActivity extends YouTubeBaseActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
                     JSONArray result = response.getJSONArray("results");
-                    if (statusCode != 200 || result.length() == 0)
+                    if (statusCode != 200 || result.length() == 0) {
+                        findViewById(R.id.noReviewView).setVisibility(View.VISIBLE);
+                        findViewById(R.id.rvReview).setVisibility(View.GONE);
+                        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) findViewById(R.id.rlRecommendationHeader).getLayoutParams();
+                        params.addRule(RelativeLayout.BELOW, R.id.noReviewView);
                         return;
+                    }
 
                     reviews.addAll(Review.fromJsonArray(result));
-
                     reviewAdapter.notifyDataSetChanged();
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
