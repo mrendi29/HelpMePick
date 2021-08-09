@@ -10,7 +10,8 @@ public class RecommendFragment extends TrendingFragment {
     private final String RECOMMEND_URL_PREFIX = "https://api.themoviedb.org/3/search/movie?api_key=" + Keys.MOVIEDB_KEY + "&language=en-US";
 
     public RecommendFragment(String query){
-        this.loadMovies(query);
+        if (!query.isEmpty() || !query.equals(""))
+            this.loadMovies(query);
     }
 
     protected void loadMovies(String url) {
