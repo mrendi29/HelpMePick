@@ -9,6 +9,11 @@ import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
 import com.example.helpmepick.fragments.RecommendFragment;
 import com.example.helpmepick.fragments.TrendingFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -16,11 +21,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Locale;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 public class MainActivity extends AppCompatActivity {
 
